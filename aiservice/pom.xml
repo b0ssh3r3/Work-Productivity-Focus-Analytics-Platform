@@ -8,10 +8,10 @@
 		<version>3.5.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.fitness</groupId>
-	<artifactId>aiservice</artifactId>
+	<groupId>com.focusanalytics</groupId>
+	<artifactId>insight-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>aiservice</name>
+	<name>insight-service</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -108,3 +108,5 @@
 	</build>
 
 </project>
+
+

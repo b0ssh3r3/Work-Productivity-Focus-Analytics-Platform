@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/fitness-micro-user
-    username: postgres
-    password: admin@123
+    url: ${USER_DB_URL:jdbc:postgresql://localhost:5432/fitness-micro-user}
+    username: ${USER_DB_USERNAME:postgres}
+    password: ${USER_DB_PASSWORD:}
 
   jpa:
     hibernate:
@@ -16,3 +16,4 @@ eureka:
 
 server:
   port: 8081
+

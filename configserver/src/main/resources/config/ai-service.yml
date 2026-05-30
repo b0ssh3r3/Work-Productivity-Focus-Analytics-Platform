@@ -11,7 +11,7 @@ spring:
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.use.type.headers: false
-        spring.json.value.default.type: com.fitness.aiservice.model.Activity
+        spring.json.value.default.type: com.focusanalytics.insightservice.model.Activity
         spring.json.trusted.packages: "*"
 
 gemini:
@@ -30,3 +30,4 @@ eureka:
 
 server:
   port: 8083
+

@@ -9,16 +9,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Document(collection = "recommendations")
+@Document(collection = "insights")
 @Data
 @Builder
-public class Recommendation {
+public class Insight {
     @Id
     private String id;
-    private String activityId;
+    private String focusSessionId;
     private String type;
     private String userId;
-    private String recommendation;
+    private String insight;
     private List<String> improvements;
     private List<String> suggestions;
     private List<String> safety;

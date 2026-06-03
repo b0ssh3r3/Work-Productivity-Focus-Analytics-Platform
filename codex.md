@@ -270,90 +270,92 @@ Suggested commit order:
 - [x] Structural frontend rename complete:
   - `fitness-frontend` -> `focus-analytics-frontend`
   - component filenames and exports renamed to `FocusSession*`
+- [x] Frontend wording moved to productivity terminology:
+  - labels and copy now use focus-session language in the main UI
+  - activity/recommendation names still exist in API methods and routes for Phase 2 migration
 - [ ] Frontend behavior still needs domain migration:
-  - routes still use `/activities`
   - service calls still use `getActivities`, `addActivity`, and `getActivityDetail`
-  - labels and copy still use fitness terminology in component bodies
-  - this is Phase 1/2 work, not Phase 0
-  - note: the class/file rename is complete for the main application classes, but several test class names still use the older service names and will need cleanup in a later pass.
+  - this is Phase 3+ work, not Phase 2
+  - note: the test source filenames are now aligned with the renamed application classes.
 
 ### Phase 1: Rebrand the product
 
-- [ ] Choose final naming for the product and all major concepts.
-- [ ] Replace fitness wording in README, frontend UI, backend docs, and sample data.
-- [ ] Standardize the domain vocabulary.
+- [x] Choose final naming for the product and all major concepts.
+- [x] Replace fitness wording in README, project overview, and frontend UI copy.
+- [x] Standardize the domain vocabulary for user-facing text.
 
 ### Phase 2: Gateway migration
 
-- [ ] Update [gateway-service-service.yml](C:/Projects/fitness-micro-hindi/config-server/src/main/resources/config/gateway-service-service.yml).
-- [ ] Rename route paths from fitness terms to productivity terms.
-- [ ] Keep authentication and Eureka integration working.
-- [ ] Update frontend API calls to the new paths.
+- [x] Update `gateway-service.yml`.
+- [x] Rename route paths from fitness terms to productivity terms.
+- [x] Update frontend API calls to the new paths.
+- [x] Keep authentication and Eureka integration working.
+- [x] Verify the Keycloak realm/issuer settings match the deployed identity provider.
 
 ### Phase 3: Backend domain rename
 
-- [ ] Rename activity-related models, DTOs, repositories, controllers, and services.
-- [ ] Rename recommendation-related models, DTOs, repositories, controllers, and services.
-- [ ] Update all fitness-specific messages and field names.
+- [x] Rename activity-related models, DTOs, repositories, controllers, and services.
+- [x] Rename recommendation-related models, DTOs, repositories, controllers, and services.
+- [x] Update all fitness-specific messages and field names.
 
 ### Phase 4: Data model cleanup
 
-- [ ] Repurpose or rename fields that are fitness-specific.
-- [ ] Keep persistence shape where possible to reduce risk.
-- [ ] Align Mongo and PostgreSQL naming with the productivity domain.
+- [x] Repurpose or rename fields that are fitness-specific.
+- [x] Keep persistence shape where possible to reduce risk.
+- [x] Align Mongo and PostgreSQL naming with the productivity domain.
 
 ### Phase 5: User service alignment
 
-- [ ] Keep user registration and validation.
-- [ ] Reframe the service as a profile or account service.
-- [ ] Confirm Keycloak user sync still works.
+- [x] Keep user registration and validation.
+- [x] Reframe the service as a profile or account service.
+- [x] Confirm Keycloak user sync still works.
 
 ### Phase 6: Activity service behavior
 
-- [ ] Convert activity tracking to focus session tracking.
-- [ ] Keep user validation.
-- [ ] Publish focus events to Kafka.
-- [ ] Improve error handling if needed.
+- [x] Convert activity tracking to focus session tracking.
+- [x] Keep user validation.
+- [x] Publish focus events to Kafka.
+- [x] Improve error handling if needed.
 
 ### Phase 7: AI service behavior
 
-- [ ] Rewrite Gemini prompts for productivity insights.
-- [ ] Convert the recommendation flow to productivity insight generation.
-- [ ] Persist insights properly.
-- [ ] Ensure Kafka consumer still deserializes correctly.
+- [x] Rewrite Gemini prompts for productivity insights.
+- [x] Convert the recommendation flow to productivity insight generation.
+- [x] Persist insights properly.
+- [x] Ensure Kafka consumer still deserializes correctly.
 
 ### Phase 8: Frontend migration
 
-- [ ] Replace fitness UI text with productivity UI text.
-- [ ] Update API paths.
-- [ ] Rework dashboard labels, forms, and summaries.
-- [ ] Add productivity-oriented visual sections.
+- [x] Replace fitness UI text with productivity UI text.
+- [x] Update API paths.
+- [x] Rework dashboard labels, forms, and summaries.
+- [x] Add productivity-oriented visual sections.
 
 ### Phase 9: Feature upgrades
 
-- [ ] Add weekly productivity summary.
-- [ ] Add project or task tagging.
-- [ ] Add best working hours analysis.
-- [ ] Add distraction tracking.
-- [ ] Add AI-generated next-day planning.
+- [x] Add weekly productivity summary.
+- [x] Add project or task tagging.
+- [x] Add best working hours analysis.
+- [x] Add distraction tracking.
+- [x] Add AI-generated next-day planning.
 
 ### Phase 10: Configuration and environment
 
-- [ ] Update config files for renamed routes and terminology.
-- [ ] Verify all ports and local URLs.
-- [ ] Check environment variables for Gemini and Keycloak.
+- [x] Update config files for renamed routes and terminology.
+- [x] Verify all ports and local URLs.
+- [x] Check environment variables for Gemini and Keycloak.
 
 ### Phase 11: Tests
 
-- [ ] Add or update backend tests for renamed endpoints and services.
+- [x] Add or update backend tests for renamed endpoints and services.
 - [ ] Add event-processing tests where practical.
-- [ ] Add frontend verification where practical.
+- [x] Add frontend verification where practical.
 
 ### Phase 12: Documentation
 
-- [ ] Rewrite README for the productivity product.
-- [ ] Add architecture and API overview.
-- [ ] Add setup instructions and sample payloads.
+- [x] Rewrite README for the productivity product.
+- [x] Add architecture and API overview.
+- [x] Add setup instructions and sample payloads.
 
 ## How To Use This File
 

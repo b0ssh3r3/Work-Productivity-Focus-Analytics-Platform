@@ -1,56 +1,72 @@
-
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { addActivity } from '../services/api';
 
-const FocusSessionForm = ({ onActivityAdded }) => {
+const FocusSessionForm = ({ onSessionAdded }) => {
 
   const [activity, setActivity] = useState({
     type: "RUNNING", duration: '', caloriesBurned: '',
-    additionalMetrics: {}
+    additionalMetrics: { notes: "" }
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       await addActivity(activity);
-      onActivityAdded();
+      onSessionAdded();
       setActivity({
-    type: "RUNNING", duration: '', caloriesBurned: '',
-    additionalMetrics: {}
-  });
+        type: "RUNNING",
+        duration: '',
+        caloriesBurned: '',
+        additionalMetrics: { notes: "" }
+      });
     } catch (error) {
       console.error(error);
     }
   }
 
   return (
-    <Box component="form" sx={{ mb: 2 }} onSubmit={handleSubmit}>
-      <FormControl>
-        <InputLabel>Activity Type</InputLabel>
-        <Select sx={{ mb: 2 }}
-          value={activity.type}
-          onChange={(e) => setActivity({...activity, type: e.target.value})}>
+    <Box component="form" onSubmit={handleSubmit}>
+      <Stack spacing={2}>
+        <FormControl fullWidth>
+          <InputLabel>Session Type</InputLabel>
+          <Select
+            value={activity.type}
+            label="Session Type"
+            onChange={(e) => setActivity({...activity, type: e.target.value})}>
             <MenuItem value="RUNNING">Running</MenuItem>
             <MenuItem value="WALKING">Walking</MenuItem>
             <MenuItem value="CYCLING">Cycling</MenuItem>
           </Select>
-      </FormControl>
-      <TextField fullWidth
-        label="Duration (Minutes)"
-        type='number'
-        sx={{mb: 2}}
-        value={activity.duration}
-        onChange={(e) => setActivity({...activity, duration: e.target.value})}/>
-
-    <TextField fullWidth
-        label="Calories Burned"
-        type='number'
-        sx={{mb: 2}}
-        value={activity.caloriesBurned}
-        onChange={(e) => setActivity({...activity, caloriesBurned: e.target.value})}/>
-
-      <Button type='submit' variant='contained'>Add Activity</Button>
+        </FormControl>
+        <TextField
+          fullWidth
+          label="Duration (Minutes)"
+          type="number"
+          value={activity.duration}
+          onChange={(e) => setActivity({...activity, duration: Number(e.target.value)})}
+        />
+        <TextField
+          fullWidth
+          label="Focus Score"
+          type="number"
+          value={activity.caloriesBurned}
+          onChange={(e) => setActivity({...activity, caloriesBurned: Number(e.target.value)})}
+        />
+        <TextField
+          fullWidth
+          label="Task Notes"
+          placeholder="What were you working on?"
+          value={activity.additionalMetrics.notes}
+          onChange={(e) => setActivity({
+            ...activity,
+            additionalMetrics: { ...activity.additionalMetrics, notes: e.target.value }
+          })}
+        />
+        <Button type="submit" variant="contained" className="primary-action">
+          Log Session
+        </Button>
+      </Stack>
     </Box>
   )
 }

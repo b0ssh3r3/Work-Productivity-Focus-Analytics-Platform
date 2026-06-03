@@ -1,10 +1,9 @@
-import { Box, Card, CardContent, Divider, Typography } from '@mui/material'
+import { Box, Card, CardContent, Chip, Divider, Stack, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router';
 import { getActivityDetail } from '../services/api';
 
 const FocusSessionDetail = () => {
-
   const { id } = useParams();
   const [activity, setActivity] = useState(null);
   const [recommendation, setRecommendation] = useState(null);
@@ -14,7 +13,7 @@ const FocusSessionDetail = () => {
       try {
         const response = await getActivityDetail(id);
         setActivity(response.data);
-        setRecommendation(response.data.recommendation);
+        setRecommendation(response.data.recommendation || response.data.insight);
       } catch (error) {
         console.error(error);
       }
@@ -24,52 +23,96 @@ const FocusSessionDetail = () => {
   }, [id]);
 
   if (!activity) {
-    return <Typography>Loading...</Typography>
+    return <Typography className="detail-loading">Loading...</Typography>
   }
 
   return (
-    <Box sx={{ maxWidth: 800, mx: 'auto', p: 2 }}>
-            <Card sx={{ mb: 2 }}>
-                <CardContent>
-                    <Typography variant="h5" gutterBottom>Activity Details</Typography>
-                    <Typography>Type: {activity.type}</Typography>
-                    <Typography>Duration: {activity.duration} minutes</Typography>
-                    <Typography>Calories Burned: {activity.caloriesBurned}</Typography>
-                    <Typography>Date: {new Date(activity.createdAt).toLocaleString()}</Typography>
-                </CardContent>
-            </Card>
-
-            {recommendation && (
-                <Card>
-                    <CardContent>
-                        <Typography variant="h5" gutterBottom>AI Recommendation</Typography>
-                        <Typography variant="h6">Analysis</Typography>
-                        <Typography paragraph>{activity.recommendation}</Typography>
-                        
-                        <Divider sx={{ my: 2 }} />
-                        
-                        <Typography variant="h6">Improvements</Typography>
-                        {activity?.improvements?.map((improvement, index) => (
-                            <Typography key={index} paragraph>• {activity.improvements}</Typography>
-                        ))}
-                        
-                        <Divider sx={{ my: 2 }} />
-                        
-                        <Typography variant="h6">Suggestions</Typography>
-                        {activity?.suggestions?.map((suggestion, index) => (
-                            <Typography key={index} paragraph>• {suggestion}</Typography>
-                        ))}
-                        
-                        <Divider sx={{ my: 2 }} />
-                        
-                        <Typography variant="h6">Safety Guidelines</Typography>
-                        {activity?.safety?.map((safety, index) => (
-                            <Typography key={index} paragraph>• {safety}</Typography>
-                        ))}
-                    </CardContent>
-                </Card>
+    <Box className="detail-shell">
+      <Card className="surface-card">
+        <CardContent>
+          <Stack spacing={1.5}>
+            <Chip label={activity.type} className="session-chip" />
+            <Typography variant="h4" className="detail-title">
+              Focus Session Details
+            </Typography>
+            <Typography className="session-meta">
+              Duration: {activity.duration} minutes
+            </Typography>
+            <Typography className="session-meta">
+              Focus Score: {activity.caloriesBurned}
+            </Typography>
+            <Typography className="session-meta">
+              Date: {new Date(activity.createdAt).toLocaleString()}
+            </Typography>
+            {activity.additionalMetrics?.notes && (
+              <Typography className="detail-notes">
+                Notes: {activity.additionalMetrics.notes}
+              </Typography>
             )}
-        </Box>
+          </Stack>
+        </CardContent>
+      </Card>
+
+      {recommendation && (
+        <Card className="surface-card">
+          <CardContent>
+            <Stack spacing={2}>
+              <Typography variant="h5" className="section-title">
+                AI Insight
+              </Typography>
+              <Typography className="detail-summary">
+                {recommendation}
+              </Typography>
+
+              <Divider />
+
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Improvement Areas
+                </Typography>
+                <Stack spacing={1}>
+                  {(activity?.improvements || []).map((improvement, index) => (
+                    <Typography key={index} className="detail-list-item">
+                      - {improvement}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Box>
+
+              <Divider />
+
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Next Steps
+                </Typography>
+                <Stack spacing={1}>
+                  {(activity?.suggestions || []).map((suggestion, index) => (
+                    <Typography key={index} className="detail-list-item">
+                      - {suggestion}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Box>
+
+              <Divider />
+
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Focus Guidelines
+                </Typography>
+                <Stack spacing={1}>
+                  {(activity?.safety || []).map((safety, index) => (
+                    <Typography key={index} className="detail-list-item">
+                      - {safety}
+                    </Typography>
+                  ))}
+                </Stack>
+              </Box>
+            </Stack>
+          </CardContent>
+        </Card>
+      )}
+    </Box>
   )
 }
 

@@ -1,6 +1,10 @@
 spring:
   application:
-    name: ai-service
+    name: insight-service
   config:
     import: optional:configserver:http://localhost:8888
+
+kafka:
+  topic:
+    name: focus-session-events
 

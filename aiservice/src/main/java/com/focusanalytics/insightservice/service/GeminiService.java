@@ -20,7 +20,7 @@ public class GeminiService {
         this.webClient = webClientBuilder.build();
     }
 
-    public String getRecommendations(String details) {
+    public String getInsights(String details) {
         Map<String, Object> requestBody = Map.of(
                 "contents", new Object[] {
                         Map.of("parts", new Object[] {
@@ -39,6 +39,10 @@ public class GeminiService {
                 .block();
 
         return response;
+    }
+
+    public String getRecommendations(String details) {
+        return getInsights(details);
     }
 }
 

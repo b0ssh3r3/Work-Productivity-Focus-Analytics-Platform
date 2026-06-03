@@ -1,6 +1,6 @@
-package com.focusanalytics.insightservice.model;
+package com.focusanalytics.focussessionservice.model;
 
-public enum ActivityType {
+public enum FocusSessionType {
     RUNNING,
     WALKING,
     CYCLING,

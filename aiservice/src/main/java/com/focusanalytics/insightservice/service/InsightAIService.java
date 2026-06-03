@@ -2,12 +2,9 @@ package com.focusanalytics.insightservice.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.focusanalytics.insightservice.model.Activity;
-import com.focusanalytics.insightservice.model.Recommendation;
+import com.focusanalytics.insightservice.model.FocusSession;
+import com.focusanalytics.insightservice.model.Insight;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +17,17 @@ import java.util.List;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class ActivityAIService {
+public class InsightAIService {
     private final GeminiService geminiService;
 
-    public Recommendation generateRecommendation(Activity activity) {
-        String prompt = createPromptForActivity(activity);
-        String aiResponse = geminiService.getRecommendations(prompt);
+    public Insight generateInsight(FocusSession focusSession) {
+        String prompt = createPromptForFocusSession(focusSession);
+        String aiResponse = geminiService.getInsights(prompt);
         log.info("RESPONSE FROM AI {} ", aiResponse);
-        return processAIResponse(activity, aiResponse);
+        return processAIResponse(focusSession, aiResponse);
     }
 
-    private Recommendation processAIResponse(Activity activity, String aiResponse) {
+    private Insight processAIResponse(FocusSession focusSession, String aiResponse) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             JsonNode rootNode = mapper.readTree(aiResponse);
@@ -54,17 +51,17 @@ public class ActivityAIService {
             addAnalysisSection(fullAnalysis, analysisNode, "overall", "Overall:");
             addAnalysisSection(fullAnalysis, analysisNode, "pace", "Pace:");
             addAnalysisSection(fullAnalysis, analysisNode, "heartRate", "Heart Rate:");
-            addAnalysisSection(fullAnalysis, analysisNode, "caloriesBurned", "Calories:");
+            addAnalysisSection(fullAnalysis, analysisNode, "productivityScore", "Productivity Score:");
 
             List<String> improvements = extractImprovements(analysisJson.path("improvements"));
             List<String> suggestions = extractSuggestions(analysisJson.path("suggestions"));
             List<String> safety = extractSafetyGuidelines(analysisJson.path("safety"));
 
-            return Recommendation.builder()
-                    .activityId(activity.getId())
-                    .userId(activity.getUserId())
-                    .type(activity.getType().toString())
-                    .recommendation(fullAnalysis.toString().trim())
+            return Insight.builder()
+                    .focusSessionId(focusSession.getId())
+                    .userId(focusSession.getUserId())
+                    .type(focusSession.getType().toString())
+                    .insight(fullAnalysis.toString().trim())
                     .improvements(improvements)
                     .suggestions(suggestions)
                     .safety(safety)
@@ -72,23 +69,23 @@ public class ActivityAIService {
                     .build();
 
         } catch (Exception e) {
-            e.printStackTrace();
-            return createDefaultRecommendation(activity);
+            log.warn("Falling back to default insight generation", e);
+            return createDefaultInsight(focusSession);
         }
     }
 
-    private Recommendation createDefaultRecommendation(Activity activity) {
-        return Recommendation.builder()
-                .activityId(activity.getId())
-                .userId(activity.getUserId())
-                .type(activity.getType().toString())
-                .recommendation("Unable to generate detailed analysis")
+    private Insight createDefaultInsight(FocusSession focusSession) {
+        return Insight.builder()
+                .focusSessionId(focusSession.getId())
+                .userId(focusSession.getUserId())
+                .type(focusSession.getType().toString())
+                .insight("Unable to generate detailed analysis")
                 .improvements(Collections.singletonList("Continue with your current routine"))
-                .suggestions(Collections.singletonList("Consider consulting a fitness consultant"))
+                .suggestions(Collections.singletonList("Consider adjusting your work blocks"))
                 .safety(Arrays.asList(
-                        "Always warm up before exercise",
+                        "Take regular breaks",
                         "Stay hydrated",
-                        "Listen to your body"
+                        "Avoid long uninterrupted screen time"
                 ))
                 .createdAt(LocalDateTime.now())
                 .build();
@@ -136,22 +133,22 @@ public class ActivityAIService {
     //    "overall": "This was an excellent"
     // Overall: This was an excellent
     private void addAnalysisSection(StringBuilder fullAnalysis, JsonNode analysisNode, String key, String prefix) {
-    if (!analysisNode.path(key).isMissingNode()){
-     fullAnalysis.append(prefix)
-             .append(analysisNode.path(key).asText())
-             .append("\n\n");
-    }
+        if (!analysisNode.path(key).isMissingNode()) {
+            fullAnalysis.append(prefix)
+                    .append(analysisNode.path(key).asText())
+                    .append("\n\n");
+        }
     }
 
-    private String createPromptForActivity(Activity activity) {
+    private String createPromptForFocusSession(FocusSession focusSession) {
         return String.format("""
-        Analyze this fitness activity and provide detailed recommendations in the following EXACT JSON format:
+        Analyze this focus session and provide detailed productivity insights in the following EXACT JSON format:
         {
           "analysis": {
             "overall": "Overall analysis here",
             "pace": "Pace analysis here",
             "heartRate": "Heart rate analysis here",
-            "caloriesBurned": "Calories analysis here"
+            "productivityScore": "Productivity score analysis here"
           },
           "improvements": [
             {
@@ -161,8 +158,8 @@ public class ActivityAIService {
           ],
           "suggestions": [
             {
-              "workout": "Workout name",
-              "description": "Detailed workout description"
+              "workout": "Work block name",
+              "description": "Detailed next-step description"
             }
           ],
           "safety": [
@@ -171,19 +168,19 @@ public class ActivityAIService {
           ]
         }
 
-        Analyze this activity:
-        Activity Type: %s
+        Analyze this focus session:
+        Session Type: %s
         Duration: %d minutes
-        Calories Burned: %d
+        Productivity Score: %d
         Additional Metrics: %s
         
-        Provide detailed analysis focusing on performance, improvements, next workout suggestions, and safety guidelines.
+        Provide detailed analysis focusing on productivity, improvements, next-step suggestions, and sustainable focus guidelines.
         Ensure the response follows the EXACT JSON format shown above.
         """,
-                activity.getType(),
-                activity.getDuration(),
-                activity.getCaloriesBurned(),
-                activity.getAdditionalMetrics()
+                focusSession.getType(),
+                focusSession.getDuration(),
+                focusSession.getProductivityScore(),
+                focusSession.getTaskMetadata()
         );
     }
 }

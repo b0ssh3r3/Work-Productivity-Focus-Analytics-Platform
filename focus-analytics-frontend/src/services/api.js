@@ -1,14 +1,16 @@
 import axios from "axios"
 
 const API_URL = 'http://localhost:8080/api'
+let authToken = null;
+let currentUserId = null;
 
 const api = axios.create({
     baseURL: API_URL
 });
 
 api.interceptors.request.use((config) => {
-    const userId = localStorage.getItem('userId');
-    const token = localStorage.getItem('token');
+    const userId = currentUserId || localStorage.getItem('userId');
+    const token = authToken || localStorage.getItem('token');
     if (token) {
         config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -20,6 +22,16 @@ api.interceptors.request.use((config) => {
     return config;
 });
 
-export const getActivities = () => api.get('/activities');
-export const addActivity = (activity) => api.post('/activities', activity);
-export const getActivityDetail = (id) => api.get(`/recommendations/activity/${id}`);
+export const setAuthContext = ({ token, userId }) => {
+    authToken = token || null;
+    currentUserId = userId || null;
+};
+
+export const clearAuthContext = () => {
+    authToken = null;
+    currentUserId = null;
+};
+
+export const getActivities = () => api.get('/focus-sessions');
+export const addActivity = (activity) => api.post('/focus-sessions', activity);
+export const getActivityDetail = (id) => api.get(`/insights/focus-session/${id}`);

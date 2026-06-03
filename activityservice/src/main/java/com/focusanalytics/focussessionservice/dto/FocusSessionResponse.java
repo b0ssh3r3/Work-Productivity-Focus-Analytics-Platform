@@ -1,6 +1,6 @@
 package com.focusanalytics.focussessionservice.dto;
 
-import com.focusanalytics.focussessionservice.model.ActivityType;
+import com.focusanalytics.focussessionservice.model.FocusSessionType;
 import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 import java.util.Map;
 
 @Data
-public class ActivityResponse {
+public class FocusSessionResponse {
     private String id;
     private String userId;
-    private ActivityType type;
+    private FocusSessionType type;
     private Integer duration;
     private Integer caloriesBurned;
     private LocalDateTime startTime;

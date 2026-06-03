@@ -15,7 +15,8 @@ public class UserService {
 
     private final UserRepository repository;
 
-    public UserResponse register(RegisterRequest request) {
+    public UserResponse registerAccount(RegisterRequest request) {
+        log.info("Registering account profile for {}", request.getEmail());
 
         if (repository.existsByEmail(request.getEmail())) {
             User existingUser = repository.findByEmail(request.getEmail());
@@ -52,7 +53,7 @@ public class UserService {
 
     public UserResponse getUserProfile(String userId) {
         User user = repository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Account profile not found"));
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.getId());
         userResponse.setPassword(user.getPassword());
@@ -65,8 +66,8 @@ public class UserService {
 
     }
 
-    public Boolean existByUserId(String userId) {
-        log.info("Calling User Service for {}", userId);
+    public Boolean existsByKeycloakId(String userId) {
+        log.info("Calling profile service for {}", userId);
         return repository.existsByKeycloakId(userId);
     }
 }

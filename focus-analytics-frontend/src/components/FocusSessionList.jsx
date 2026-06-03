@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
-import { Card, CardContent, Grid, Typography } from '@mui/material';
+import { Card, CardContent, Chip, Grid, Stack, Typography } from '@mui/material';
 import { getActivities } from '../services/api';
 
 const FocusSessionList = () => {
@@ -24,13 +24,24 @@ const FocusSessionList = () => {
   return (
     <Grid container spacing={2}>
       {activities.map((activity) => (
-        <Grid container spacing={{xs: 2, md: 3}} columns={{xs: 4, sm:8, md: 12}}>
-          <Card sx={{cursor: 'pointer'}}
-            onClick={() => navigate( `/activities/${activity.id}`)}>
+        <Grid item xs={12} md={6} key={activity.id}>
+          <Card
+            className="session-card"
+            onClick={() => navigate(`/focus-sessions/${activity.id}`)}
+          >
             <CardContent>
-              <Typography variant='h6'>{activity.type}</Typography>
-              <Typography>Duration: {activity.duration}</Typography>
-              <Typography>Calories: {activity.caloriesBurned}</Typography>
+              <Stack spacing={1.25}>
+                <Chip size="small" label={activity.type} className="session-chip" />
+                <Typography variant='h6' className="session-title">
+                  {activity.additionalMetrics?.notes || 'Untitled focus block'}
+                </Typography>
+                <Typography className="session-meta">
+                  Duration: {activity.duration} minutes
+                </Typography>
+                <Typography className="session-meta">
+                  Focus Score: {activity.caloriesBurned}
+                </Typography>
+              </Stack>
             </CardContent>
           </Card>
         </Grid>

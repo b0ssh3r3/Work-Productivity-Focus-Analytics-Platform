@@ -1,27 +1,27 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://localhost:27017/airecommendationfitness
-      database: airecommendationfitness
+      uri: mongodb://localhost:27017/insightanalytics
+      database: insightanalytics
   kafka:
     bootstrap-servers: localhost:9092
     consumer:
-      group-id: activity-processor-group
+      group-id: focus-session-processor-group
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.use.type.headers: false
-        spring.json.value.default.type: com.focusanalytics.insightservice.model.Activity
+        spring.json.value.default.type: com.focusanalytics.insightservice.model.FocusSession
         spring.json.trusted.packages: "*"
 
 gemini:
   api:
-    url: ${GEMINI_URL}
-    key: ${GEMINI_KEY}
+    url: ${GEMINI_URL:http://localhost:9999}
+    key: ${GEMINI_KEY:dummy-key}
 
 kafka:
   topic:
-    name: activity-events
+    name: focus-session-events
 
 eureka:
   client:
@@ -30,4 +30,3 @@ eureka:
 
 server:
   port: 8083
-

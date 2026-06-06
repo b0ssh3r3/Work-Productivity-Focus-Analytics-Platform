@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: FOCUS-SESSION-SERVICE  # Critical for Eureka
   data:
     mongodb:
       uri: mongodb://localhost:27017/focussessionanalytics
@@ -8,18 +10,29 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  cloud:
+    loadbalancer:
+      ribbon:
+        enabled: false  # Use Spring Cloud LoadBalancer instead of Ribbon
+      cache:
+        enabled: true
 
 kafka:
   topic:
     name: focus-session-events
 
+server:
+  port: 8082
+
 eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
   instance:
     prefer-ip-address: true
     hostname: localhost
-
-server:
-  port: 8082
+    instance-id: ${spring.application.name}:${server.port}
+    non-secure-port-enabled: true
+    non-secure-port: ${server.port}

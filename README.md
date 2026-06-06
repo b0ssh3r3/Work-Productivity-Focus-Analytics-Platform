@@ -52,7 +52,7 @@ Example insight response:
 ```json
 {
   "focusSessionId": "session-1",
-  "type": "RUNNING",
+  "type": "CASUAL_CODING",
   "userId": "user-1",
   "insight": "Overall: Good session.",
   "improvements": ["Focus: Reduce context switching"],

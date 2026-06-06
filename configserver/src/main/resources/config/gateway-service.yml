@@ -2,8 +2,19 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+    instance-id: ${spring.application.name}:${server.port}
+    non-secure-port-enabled: true
+    non-secure-port: ${server.port}
 
 spring:
+  application:
+    name: GATEWAY-SERVICE
   security:
     oauth2:
       resourceserver:
@@ -20,13 +31,13 @@ spring:
               predicates:
                 - Path=/api/users/**
 
-            - id: activity-service
-              uri: lb://ACTIVITY-SERVICE
+            - id: focus-session-service
+              uri: lb://FOCUS-SESSION-SERVICE
               predicates:
                 - Path=/api/focus-sessions/**
 
-            - id: ai-service
-              uri: lb://AI-SERVICE
+            - id: insight-service
+              uri: lb://INSIGHT-SERVICE
               predicates:
                 - Path=/api/insights/**
 

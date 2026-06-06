@@ -34,9 +34,10 @@ const FocusSessionForm = ({ onSessionAdded }) => {
             value={activity.type}
             label="Session Type"
             onChange={(e) => setActivity({...activity, type: e.target.value})}>
-            <MenuItem value="RUNNING">Running</MenuItem>
-            <MenuItem value="WALKING">Walking</MenuItem>
-            <MenuItem value="CYCLING">Cycling</MenuItem>
+            <MenuItem value="OFFICE_WORK">OFFICE_WORK</MenuItem>
+            <MenuItem value="CASUAL_CODING">CASUAL_CODING</MenuItem>
+            <MenuItem value="GAMING">GAMING</MenuItem>
+            <MenuItem value="OTHER">OTHER</MenuItem>
           </Select>
         </FormControl>
         <TextField

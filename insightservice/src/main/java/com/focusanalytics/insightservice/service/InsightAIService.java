@@ -51,7 +51,7 @@ public class InsightAIService {
             addAnalysisSection(fullAnalysis, analysisNode, "overall", "Overall:");
             addAnalysisSection(fullAnalysis, analysisNode, "pace", "Pace:");
             addAnalysisSection(fullAnalysis, analysisNode, "heartRate", "Heart Rate:");
-            addAnalysisSection(fullAnalysis, analysisNode, "productivityScore", "Productivity Score:");
+            addAnalysisSection(fullAnalysis, analysisNode, "focusScore", "Focus Score:");
 
             List<String> improvements = extractImprovements(analysisJson.path("improvements"));
             List<String> suggestions = extractSuggestions(analysisJson.path("suggestions"));
@@ -148,7 +148,7 @@ public class InsightAIService {
             "overall": "Overall analysis here",
             "pace": "Pace analysis here",
             "heartRate": "Heart rate analysis here",
-            "productivityScore": "Productivity score analysis here"
+            "focusScore": "Productivity score analysis here"
           },
           "improvements": [
             {
@@ -179,7 +179,7 @@ public class InsightAIService {
         """,
                 focusSession.getType(),
                 focusSession.getDuration(),
-                focusSession.getProductivityScore(),
+                focusSession.getFocusScore(),
                 focusSession.getTaskMetadata()
         );
     }

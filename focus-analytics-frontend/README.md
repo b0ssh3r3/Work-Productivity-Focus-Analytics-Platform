@@ -35,5 +35,5 @@ The frontend calls:
 
 Notes:
 
-- The frontend keeps compatibility field names like `caloriesBurned` and `additionalMetrics` at the API boundary.
+- The frontend keeps compatibility field names like `focusScore` and `additionalMetrics` at the API boundary.
 - Product copy and dashboard layout are already aligned to the productivity domain.

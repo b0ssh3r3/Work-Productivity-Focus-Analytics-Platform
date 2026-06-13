@@ -5,6 +5,7 @@ import com.focusanalytics.focussessionservice.dto.FocusSessionRequest;
 import com.focusanalytics.focussessionservice.dto.FocusSessionResponse;
 import com.focusanalytics.focussessionservice.model.FocusSession;
 import com.focusanalytics.focussessionservice.model.FocusSessionType;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -12,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -35,13 +37,19 @@ class FocusSessionServiceTest {
     @InjectMocks
     private FocusSessionService focusSessionService;
 
+    @BeforeEach
+    void setUp() {
+        // Set the @Value field that Mockito can't inject
+        ReflectionTestUtils.setField(focusSessionService, "topicName", "focus-session-events");
+    }
+
     @Test
     void trackFocusSessionMapsPersistenceFieldsAndPublishesEvent() {
         FocusSessionRequest request = new FocusSessionRequest();
         request.setUserId("user-1");
         request.setType(FocusSessionType.OTHER);
         request.setDuration(45);
-        request.setCaloriesBurned(82);
+        request.setFocusScore(82);
         request.setStartTime(LocalDateTime.of(2026, 6, 1, 10, 0));
         request.setAdditionalMetrics(Collections.singletonMap("notes", "refactor #backend"));
 
@@ -50,7 +58,7 @@ class FocusSessionServiceTest {
                 .userId("user-1")
                 .type(FocusSessionType.OTHER)
                 .duration(45)
-                .productivityScore(82)
+                .focusScore(82)
                 .startTime(request.getStartTime())
                 .taskMetadata(request.getAdditionalMetrics())
                 .createdAt(LocalDateTime.of(2026, 6, 1, 10, 45))
@@ -68,11 +76,11 @@ class FocusSessionServiceTest {
 
         assertEquals("user-1", persisted.getUserId());
         assertEquals(FocusSessionType.OTHER, persisted.getType());
-        assertEquals(82, persisted.getProductivityScore());
+        assertEquals(82, persisted.getFocusScore());
         assertEquals(request.getAdditionalMetrics(), persisted.getTaskMetadata());
         assertEquals("session-1", response.getId());
-        assertEquals(82, response.getCaloriesBurned());
-        verify(kafkaTemplate).send(anyString(), eq("user-1"), eq(saved));
+        assertEquals(82, response.getFocusScore());
+        verify(kafkaTemplate).send(eq("focus-session-events"), eq("user-1"), eq(saved));
     }
 
     @Test
@@ -80,9 +88,9 @@ class FocusSessionServiceTest {
         FocusSession session = FocusSession.builder()
                 .id("session-2")
                 .userId("user-1")
-                .type(FocusSessionType.WALKING)
+                .type(FocusSessionType.OTHER)
                 .duration(30)
-                .productivityScore(64)
+                .focusScore(64)
                 .build();
 
         when(focusSessionRepository.findByUserId("user-1")).thenReturn(List.of(session));
@@ -91,7 +99,7 @@ class FocusSessionServiceTest {
 
         assertEquals(1, responses.size());
         assertEquals("session-2", responses.get(0).getId());
-        assertEquals(64, responses.get(0).getCaloriesBurned());
+        assertEquals(64, responses.get(0).getFocusScore());
     }
 
     @Test

@@ -11,7 +11,7 @@ public class FocusSessionRequest {
     private String userId;
     private FocusSessionType type;
     private Integer duration;
-    private Integer caloriesBurned;
+    private Integer focusScore;
     private LocalDateTime startTime;
     private Map<String, Object> additionalMetrics;
 }

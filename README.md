@@ -34,7 +34,7 @@ Example payload:
 {
   "type": "DEEP_WORK",
   "duration": 50,
-  "caloriesBurned": 85,
+  "focusScore": 85,
   "startTime": "2026-06-03T09:00:00",
   "additionalMetrics": {
     "notes": "Planning sprint goals #planning #backend"
@@ -97,5 +97,5 @@ Useful environment values:
 
 ## Notes
 
-- The frontend still uses compatibility field names like `caloriesBurned` and `additionalMetrics` at the API boundary.
+- The frontend still uses compatibility field names like `focusScore` and `additionalMetrics` at the API boundary.
 - The product vocabulary in the UI, config, and backend is aligned around focus sessions and insights.

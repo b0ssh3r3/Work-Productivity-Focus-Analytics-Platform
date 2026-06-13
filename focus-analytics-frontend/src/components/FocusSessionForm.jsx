@@ -5,7 +5,7 @@ import { addActivity } from '../services/api';
 const FocusSessionForm = ({ onSessionAdded }) => {
 
   const [activity, setActivity] = useState({
-    type: "RUNNING", duration: '', caloriesBurned: '',
+    type: "OTHER", duration: '', focusScore: '',
     additionalMetrics: { notes: "" }
   });
 
@@ -15,9 +15,9 @@ const FocusSessionForm = ({ onSessionAdded }) => {
       await addActivity(activity);
       onSessionAdded();
       setActivity({
-        type: "RUNNING",
+        type: "OTHER",
         duration: '',
-        caloriesBurned: '',
+        focusScore: '',
         additionalMetrics: { notes: "" }
       });
     } catch (error) {
@@ -51,8 +51,8 @@ const FocusSessionForm = ({ onSessionAdded }) => {
           fullWidth
           label="Focus Score"
           type="number"
-          value={activity.caloriesBurned}
-          onChange={(e) => setActivity({...activity, caloriesBurned: Number(e.target.value)})}
+          value={activity.focusScore}
+          onChange={(e) => setActivity({...activity, focusScore: Number(e.target.value)})}
         />
         <TextField
           fullWidth

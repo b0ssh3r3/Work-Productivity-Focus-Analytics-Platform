@@ -35,7 +35,7 @@ public class FocusSessionService {
                 .userId(request.getUserId())
                 .type(request.getType())
                 .duration(request.getDuration())
-                .productivityScore(request.getCaloriesBurned())
+                .focusScore(request.getFocusScore())
                 .startTime(request.getStartTime())
                 .taskMetadata(request.getAdditionalMetrics())
                 .build();
@@ -58,7 +58,7 @@ public class FocusSessionService {
         response.setUserId(focusSession.getUserId());
         response.setType(focusSession.getType());
         response.setDuration(focusSession.getDuration());
-        response.setCaloriesBurned(focusSession.getProductivityScore());
+        response.setFocusScore(focusSession.getFocusScore());
         response.setStartTime(focusSession.getStartTime());
         response.setAdditionalMetrics(focusSession.getTaskMetadata());
         response.setCreatedAt(focusSession.getCreatedAt());

@@ -39,7 +39,7 @@ const FocusSessionDetail = () => {
               Duration: {activity.duration} minutes
             </Typography>
             <Typography className="session-meta">
-              Focus Score: {activity.caloriesBurned}
+              Focus Score: {activity.focusScore}
             </Typography>
             <Typography className="session-meta">
               Date: {new Date(activity.createdAt).toLocaleString()}

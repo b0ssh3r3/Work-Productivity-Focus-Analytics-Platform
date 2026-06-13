@@ -39,7 +39,7 @@ const FocusSessionList = () => {
                   Duration: {activity.duration} minutes
                 </Typography>
                 <Typography className="session-meta">
-                  Focus Score: {activity.caloriesBurned}
+                  Focus Score: {activity.focusScore}
                 </Typography>
               </Stack>
             </CardContent>

@@ -29,9 +29,9 @@ class InsightAIServiceTest {
         FocusSession focusSession = FocusSession.builder()
                 .id("session-1")
                 .userId("user-1")
-                .type(FocusSessionType.RUNNING)
+                .type(FocusSessionType.OTHER)
                 .duration(40)
-                .productivityScore(77)
+                .focusScore(77)
                 .startTime(LocalDateTime.of(2026, 6, 1, 9, 0))
                 .taskMetadata(Map.of("notes", "ship feature"))
                 .build();
@@ -43,7 +43,7 @@ class InsightAIServiceTest {
                       "content": {
                         "parts": [
                           {
-                            "text": "```json\\n{\\"analysis\\":{\\"overall\\":\\"Good session\\",\\"pace\\":\\"Steady\\",\\"heartRate\\":\\"Stable\\",\\"productivityScore\\":\\"Strong\\"},\\"improvements\\":[{\\"area\\":\\"Focus\\",\\"recommendation\\":\\"Reduce context switching\\"}],\\"suggestions\\":[{\\"workout\\":\\"Next block\\",\\"description\\":\\"Plan a deep work block\\"}],\\"safety\\":[\\"Take breaks\\"]}\\n```"
+                            "text": "```json\\n{\\"analysis\\":{\\"overall\\":\\"Good session\\",\\"pace\\":\\"Steady\\",\\"heartRate\\":\\"Stable\\",\\"focusScore\\":\\"Strong\\"},\\"improvements\\":[{\\"area\\":\\"Focus\\",\\"recommendation\\":\\"Reduce context switching\\"}],\\"suggestions\\":[{\\"workout\\":\\"Next block\\",\\"description\\":\\"Plan a deep work block\\"}],\\"safety\\":[\\"Take breaks\\"]}\\n```"
                           }
                         ]
                       }

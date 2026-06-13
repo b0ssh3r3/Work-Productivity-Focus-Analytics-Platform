@@ -22,7 +22,7 @@ public class FocusSession {
     private String userId;
     private FocusSessionType type;
     private Integer duration;
-    private Integer productivityScore;
+    private Integer focusScore;
     private LocalDateTime startTime;
 
     @Field("taskMetadata")

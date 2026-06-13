@@ -41,7 +41,7 @@ const ProductivityInsightsPanel = () => {
     })
 
     const totalDuration = weekly.reduce((sum, activity) => sum + (Number(activity.duration) || 0), 0)
-    const totalScore = weekly.reduce((sum, activity) => sum + (Number(activity.caloriesBurned) || 0), 0)
+    const totalScore = weekly.reduce((sum, activity) => sum + (Number(activity.focusScore) || 0), 0)
     const averageScore = weekly.length ? Math.round(totalScore / weekly.length) : 0
     const tags = [...new Set(weekly.flatMap((activity) => extractTags(activity.additionalMetrics?.notes || "")))]
     const distractionCount = weekly.filter((activity) => {
@@ -55,7 +55,7 @@ const ProductivityInsightsPanel = () => {
       const hour = new Date(activity.startTime).getHours()
       const bucket = byHour.get(hour) || { count: 0, score: 0 }
       bucket.count += 1
-      bucket.score += Number(activity.caloriesBurned) || 0
+      bucket.score += Number(activity.focusScore) || 0
       byHour.set(hour, bucket)
     })
 
@@ -69,7 +69,7 @@ const ProductivityInsightsPanel = () => {
       }
     }
 
-    const ranked = [...weekly].sort((a, b) => (Number(b.caloriesBurned) || 0) - (Number(a.caloriesBurned) || 0))
+    const ranked = [...weekly].sort((a, b) => (Number(b.focusScore) || 0) - (Number(a.focusScore) || 0))
     const nextDayPlan = ranked.slice(0, 3).map((activity) => getTaskLabel(activity.additionalMetrics?.notes || ""))
 
     return {

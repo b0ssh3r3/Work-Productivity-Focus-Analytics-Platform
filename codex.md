@@ -73,7 +73,7 @@ Use this terminology consistently across backend, frontend, docs, and route name
 - `Activity` -> `FocusSession`
 - `ActivityType` -> `WorkMode` or `SessionType`
 - `Recommendation` -> `Insight`
-- `caloriesBurned` -> `focusScore` or `productivityScore`
+- `focusScore` -> `focusScore` or `productivityScore`
 - `additionalMetrics` -> `notes`, `tags`, `distractionReasons`, or `taskMetadata`
 - `activity-events` -> `focus-session-events`
 
